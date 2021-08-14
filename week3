@@ -4,30 +4,30 @@
 ## Returns a matrix with extra functionality which allows calculating the
 ## inverse of the matrix and caches the result.
 
-cachematrix<- function(x = matrix()) {
-        I <- NULL
-        S<- function(y) { x <- y
-                   inv <- NULL
-        }
-        G <- function() x
-        setI <- function(Inv) I <- Inv
-        GI <- function() I
-        list(S = S,
-             G = G,
-             setI = setI,
-             GI = GI)
+makeCacheMatrix <- function(x = matrix()) {
+    s <- NULL
+    set <- function(y) {
+        x <<- y
+        s <<- NULL
+    }
+    get <- function() x
+    setSolve <- function(slv) s <<- slv
+    getSolve <- function() s
+    list(set = set, get = get, setSolve = setSolve, getSolve = getSolve)
 }
+
+
 ## Takes a cached matrix and fetches the cached inversion if one exists or
 ## otherwise it calculates the inverse and caches the result.
 
-cachesolve <- function(x, ...) {
-        inv <- x$GI()
-        if (!is.null(I)) {
-                message(" cached data")
-                return(I)
-        }
-        mat <- x$get()
-        inv <- solve(mat, ...)
-        x$setInverse(I)
-        I
+cacheSolve <- function(x, ...) {
+    s <- x$getSolve()
+    if (!is.null(s)) {
+        message("Getting cached data")
+        return(s)
+    }
+    data <- x$get()
+    s <- solve(data)
+    x$setSolve(s)
+    s
 }
