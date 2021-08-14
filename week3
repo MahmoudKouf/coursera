@@ -1,0 +1,26 @@
+
+cachematrix<- function(x = matrix()) {
+        I <- NULL
+        S<- function(y) { x <- y
+                   inv <- NULL
+        }
+        G <- function() x
+        setI <- function(Inv) I <- Inv
+        GI <- function() I
+        list(S = S,
+             G = G,
+             setI = setI,
+             GI = GI)
+}
+
+cachesolve <- function(x, ...) {
+        inv <- x$GI()
+        if (!is.null(I)) {
+                message(" cached data")
+                return(I)
+        }
+        mat <- x$get()
+        inv <- solve(mat, ...)
+        x$setInverse(I)
+        I
+}
